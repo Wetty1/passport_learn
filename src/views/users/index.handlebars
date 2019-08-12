@@ -1,0 +1,30 @@
+
+<div class="col-xs-12 col-md-12">
+    <h2 class="text-center">Register new user</h2>
+    <table class="table table-bordered">
+         <thead>
+              <tr>
+                   <th>Name</th>
+                   <th>Username</th>
+                   <th>Email</th>
+                   <th>Action</th>
+              </tr>
+         </thead>
+         <tbody>
+               {{#each users}}
+                    <tr>
+                         <td>{{name}}</td>
+                         <td>{{username}}</td>
+                         <td>{{email}}</td>
+                         <td>
+                              <form action="/users/{{_id}}/?_method=DELETE" method="post">
+                                   <button type="submit" class="btn btn-danger">Delete</button>
+                              </form>
+                         </td>
+                    </tr>
+               {{else}}
+                    <h3>Data not found</h3>
+               {{/each}}
+         </tbody>
+    </table>
+</div>

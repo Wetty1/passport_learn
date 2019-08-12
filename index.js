@@ -17,6 +17,7 @@ const app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(morgan('dev'))
+app.use(methodOverride('_method'))
 
 // CONFIGURANDO O PASSPORT
 app.use(passport.initialize())
