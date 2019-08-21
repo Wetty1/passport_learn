@@ -5,7 +5,7 @@ module.exports = (req, res) => {
           .find({})
           .then((users) => {
                return res.render('users/index', {
-                    users
+                    users: users
                })
           })
           .catch((error) => {

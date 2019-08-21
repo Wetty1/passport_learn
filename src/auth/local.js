@@ -39,4 +39,25 @@ module.exports = (passport) => {
                return cb(error, false)
           })
      }))
+
+     passport.use('local-signin', new LocalStrategy({
+          usernameField: 'username',
+          passwordField: 'password',
+          passReqToCallback: true
+     },
+          function (req, username, password, cb) {
+               User.findOne({username}).then((user) => {
+                    if(!user) {
+                         return cb(null, false)
+                    }
+                    user.validate(password, (err, result) => {
+                         if(!result || err) {
+                              return cb(null, false)
+                         }
+                         console.log("logado")
+                         return cb(null, user)
+                    })
+               })
+          }
+     ))
 }
