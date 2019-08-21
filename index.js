@@ -18,14 +18,23 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(morgan('dev'))
 app.use(methodOverride('_method'))
+app.use(session({
+    secret: '!@#%asdpo@#$$',
+     resave: false,
+      saveUninitialized: true 
+    })) // Antes do passport.initialize()
 
 // CONFIGURANDO O PASSPORT
 app.use(passport.initialize())
     /** PASSPORT BASIC *
-    app.get('*', passport.authenticate('basic', { session: false }))
-    passport.use(require('./src/auth/basic'))**/
+        app.get('*', passport.authenticate('basic', { session: false }))
+        passport.use(require('./src/auth/basic'))
+    **/
 
-require('./src/index')(app)
+    /** PASSPORT LOCAL */
+    require('./src/auth/local')(passport)
+
+require('./src/index')(app, passport)
 
 // CONFIGURANDO O VIEW ENGINE
 app.engine('handlebars', exphbs())
