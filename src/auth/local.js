@@ -1,4 +1,5 @@
 const LocalStrategy = require('passport-local')
+const mongoose = require('mongoose')
 const User = require('./../model/User')
 
 module.exports = (passport) => {
@@ -20,18 +21,23 @@ module.exports = (passport) => {
      function (req, username, password, cb) {
           User.findOne({username: username}).then((userExit) => {
                if(!userExit) {
-                    let user = new User(req.body)
-
+                    let user = new User({
+                         name:req.body.name,
+                         username:req.body.username,
+                         email: req.body.email,
+                         password: req.body.password
+                    })
                     user.password = user.genHash(user.password)
-
-                    return user
-                         .save()
-                         .then((user) => {
-                              return cb(null, user)
+                    
+                    console.log('Usuario: ', user)
+                    return user.save()
+                         .then((userX) => {
+                              console.log('Enviado pro banco:')
+                              return cb(null, userX)
                          })
                          .catch((error) => {
-                              console.error(error)
-                              return cb(null)
+                              console.error('errozão bolado', error)
+                              return cb(error)
                          })
                }
                return cb(null, false)
@@ -48,10 +54,12 @@ module.exports = (passport) => {
           function (req, username, password, cb) {
                User.findOne({username}).then((user) => {
                     if(!user) {
+                         console.error('Não encontrado!')
                          return cb(null, false)
                     }
-                    user.validate(password, (err, result) => {
+                    user.valid(password, (err, result) => {
                          if(!result || err) {
+                              console.error('Erro na senha!')
                               return cb(null, false)
                          }
                          console.log("logado")

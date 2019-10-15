@@ -20,19 +20,20 @@ app.use(morgan('dev'))
 app.use(methodOverride('_method'))
 app.use(session({
     secret: '!@#%asdpo@#$$',
-     resave: false,
-      saveUninitialized: true 
-    })) // Antes do passport.initialize()
+    resave: false,
+    saveUninitialized: true 
+})) // Antes do passport.initialize()
 
-// CONFIGURANDO O PASSPORT
+/** PASSPORT LOCAL */
+require('./src/auth/local')(passport)
 app.use(passport.initialize())
+app.use(passport.session())
+// CONFIGURANDO O PASSPORT
     /** PASSPORT BASIC *
         app.get('*', passport.authenticate('basic', { session: false }))
         passport.use(require('./src/auth/basic'))
     **/
 
-    /** PASSPORT LOCAL */
-    require('./src/auth/local')(passport)
 
 require('./src/index')(app, passport)
 
@@ -42,9 +43,11 @@ app.set('views', path.join(__dirname, 'src/views'))
 app.set('view engine', 'handlebars')
 
 // CONFIGURANDO MONGOOSE
-mongoose.connect('mongodb://localhost:27017/auth', { useNewUrlParser: true })
+mongoose.connect('mongodb+srv://user:user@cluster0-0v0b4.mongodb.net/PassportLearn?retryWrites=true&w=majority', { useNewUrlParser: true })
 .then(() => {
     console.log('Servidor mongo conectado com sucesso!')
+}).catch((error) => {
+    console.error(error)
 })
 mongoose.Promise = global.Promise
 

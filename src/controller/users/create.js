@@ -1,4 +1,6 @@
-const User = require('./../../model/User')
+const mongoose = require('mongoose')
+require('./../../model/User')
+const User = mongoose.model('user')
 
 module.exports = (req, res) => {
      let user = new User(req.body)
@@ -7,6 +9,7 @@ module.exports = (req, res) => {
      User
           .create(req.body)
           .then((user) => {
+               console.log(user)
                return res.redirect('/')
           }).catch((error) => {
                console.log(error)

@@ -5,7 +5,7 @@ module.exports = (passport) => {
      router.get('/', require('./login'))     
      router.post('/login', passport.authenticate('local-signin', {
           successRedirect: './..',
-          failureRedirect: './'
+          failureRedirect: './deuruim'
      }))
      return router
 }
